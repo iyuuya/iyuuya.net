@@ -7,16 +7,23 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=VT323&display=swap"
+      href="https://fonts.googleapis.com/css2?family=DotGothic16&family=VT323&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <main class="screen">
-      <p class="hello">iyuuya.net</p>
-      <p>coming soon...???<span class="cursor" aria-hidden="true"></span></p>
+      <div class="workspace">
+        <section class="pane is-active">
+          <h1 class="hello">iyuuya.net</h1>
+          <p>coming soon...???</p>
+        </section>
+        <!--<section class="pane"></section>-->
+      </div>
+      <div class="status" id="status"></div>
+      <div class="command" id="command"></div>
     </main>
-    <script src="main.js"></script>
+    <script type="module" src="main.js"></script>
   </body>
 </html>

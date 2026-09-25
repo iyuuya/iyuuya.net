@@ -1,18 +1,17 @@
 :root {
   --color-void: #000;
-  --color-phosphor: #2ad45a;
+  --color-phosphor: #3ee86c;
   --color-phosphor-hot: #7dffb0;
   --color-screen: #04180c;
   --color-screen-deep: #020a06;
   --color-glass: #fff;
 
-  --font-console: "VT323", "Courier New", Courier, monospace;
+  --font-console: "DotGothic16", "VT323", "MS Gothic", "Courier New", Courier, monospace;
   --text-body: clamp(1.35rem, 2.8vw, 2rem);
-  --text-display: clamp(2.5rem, 8vw, 5.5rem);
-  --leading-body: 1.15;
-  --leading-display: 1;
-  --tracking-body: 0.08em;
-  --tracking-display: 0.12em;
+  --text-display: clamp(2rem, 6vw, 4rem);
+  --leading-body: 1.2;
+  --leading-display: 1.1;
+  --tracking-body: 0;
 
   --space-screen: 1.5rem;
 
@@ -20,9 +19,6 @@
     0 0 1px rgb(from var(--color-phosphor-hot) r g b / 0.55),
     0 0 6px rgb(from var(--color-phosphor) r g b / 0.35),
     0 0 14px rgb(from var(--color-phosphor) r g b / 0.16);
-  --glow-cursor:
-    0 0 4px rgb(from var(--color-phosphor) r g b / 0.7),
-    0 0 8px rgb(from var(--color-phosphor) r g b / 0.28);
 
   --layer-screen: 0;
   --layer-scanline: 1;
@@ -84,8 +80,8 @@ body::before {
   background:
     repeating-linear-gradient(
       to bottom,
-      rgb(from var(--color-void) r g b / 0.32) 0px,
-      rgb(from var(--color-void) r g b / 0.32) 1px,
+      rgb(from var(--color-void) r g b / 0.18) 0px,
+      rgb(from var(--color-void) r g b / 0.18) 1px,
       transparent 1px,
       transparent 3px
     );
@@ -98,8 +94,8 @@ body::after {
   background:
     radial-gradient(
       ellipse at center,
-      transparent 38%,
-      rgb(from var(--color-void) r g b / 0.72) 100%
+      transparent 62%,
+      rgb(from var(--color-void) r g b / 0.4) 100%
     ),
     linear-gradient(
       160deg,
@@ -108,7 +104,7 @@ body::after {
       transparent 100%
     );
   box-shadow:
-    inset 0 0 80px 24px rgb(from var(--color-void) r g b / 0.45),
+    inset 0 0 48px 8px rgb(from var(--color-void) r g b / 0.28),
     inset 0 0 140px 40px rgb(from var(--color-phosphor) r g b / 0.025);
   animation: flicker var(--flicker-duration) infinite;
 }
@@ -116,12 +112,13 @@ body::after {
 .screen {
   position: relative;
   z-index: var(--layer-screen);
-  min-height: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-start;
+  align-items: stretch;
   padding: var(--space-screen);
+  padding-bottom: 0.6rem;
   font-size: var(--text-body);
   font-weight: 400;
   line-height: var(--leading-body);
@@ -134,21 +131,70 @@ body::after {
   text-shadow: var(--glow-text);
 }
 
+.workspace {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+
+.pane {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid rgb(from var(--color-phosphor) r g b / 0.35);
+  padding: 0.6rem;
+}
+
+.pane.is-active {
+  border-color: var(--color-phosphor);
+}
+
 .hello {
   font-size: var(--text-display);
   line-height: var(--leading-display);
-  letter-spacing: var(--tracking-display);
+  font-weight: 400;
 }
 
-.cursor {
-  display: inline-block;
-  width: 0.55em;
-  height: 0.9em;
-  margin-left: 0.12em;
-  vertical-align: -0.08em;
+.status,
+.command {
+  flex: none;
+  min-height: calc(1em * var(--leading-body));
+}
+
+.status {
+  margin-top: 0.45rem;
+  padding: 0 0.4em;
   background: var(--color-phosphor);
-  box-shadow: var(--glow-cursor);
+  color: var(--color-void);
+  text-shadow: none;
+}
+
+.regions,
+.block,
+.region {
+  position: absolute;
+  pointer-events: none;
+}
+
+.regions {
+  inset: 0;
+  z-index: 1;
+}
+
+.region {
+  background: rgb(from var(--color-phosphor) r g b / 0.22);
+}
+
+.block {
+  z-index: 2;
+  background: var(--color-phosphor);
   animation: blink var(--blink-duration) steps(1, end) infinite;
+}
+
+.block.is-image {
+  background: transparent;
+  box-shadow: inset 0 0 0 2px var(--color-phosphor);
 }
 
 @keyframes blink {
@@ -176,7 +222,7 @@ body::after {
 
 @media (prefers-reduced-motion: reduce) {
   body::after,
-  .cursor {
+  .block {
     animation: none;
   }
 }
