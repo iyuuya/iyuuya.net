@@ -1,3 +1,9 @@
 [tools]
 go = "1"
 "go:golang.org/x/tools/gopls" = "latest"
+
+[tasks.test]
+run = "go test ./..."
+
+[tasks.run]
+run = "go run main.go"

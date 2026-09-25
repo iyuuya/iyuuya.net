@@ -36,7 +36,7 @@ func TestUseOrder(t *testing.T) {
 
 func TestRecoverCallsNextAndCatchesPanic(t *testing.T) {
 	called := false
-	h := Recover(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	h := Recoverer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		called = true
 		panic("boom")
 	}))
@@ -53,7 +53,7 @@ func TestRecoverCallsNextAndCatchesPanic(t *testing.T) {
 }
 
 func TestRecoverRethrowsAbortHandler(t *testing.T) {
-	h := Recover(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	h := Recoverer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		panic(http.ErrAbortHandler)
 	}))
 
