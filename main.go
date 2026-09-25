@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -13,13 +12,10 @@ import (
 func main() {
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/{$}", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Hello, World!")
-	})
 	mux.HandleFunc("/error", func(w http.ResponseWriter, r *http.Request) {
 		panic("This is a test panic")
 	})
-	mux.HandleFunc("/", handler.NotFound)
+	mux.Handle("/", handler.Static("public"))
 	h := middleware.Use(mux, middleware.Recoverer, middleware.Logger)
 
 	port := os.Getenv("PORT")
